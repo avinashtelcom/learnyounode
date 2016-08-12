@@ -1,14 +1,18 @@
 var fs = require("fs");
-fs.readFile(process.argv[2],function(err, data) {
-	if(err) {
-		return console.error("Error Ocured while reading the file");
-	}
-	var str = data.toString();
-	var arr = str.split("\n");
-	if(arr.length) {
-	 console.log(arr.length-1);
-	} else {
-	 console.log(0);
-	}
+var path = require("path");
+
+var folder = process.argv[2];
+var ext = "."+process.argv[3];
+
+fs.readdir(folder, function(err, files) {
+	if(err) return console.error(err);
 	
+	var realArr = files.filter(function(val) {
+		return path.extname(val) === ext;
+	});
+
+	for (var i = 0; i < realArr.length; i++) {
+		console.log(realArr[i]);
+	}
 });
+
