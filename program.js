@@ -1,10 +1,14 @@
-var mymodule = require("./mymodule.js");
+var http = require("http");
+var bl  = require("bl");
 
-mymodule(process.argv[2],process.argv[3], function(err, data) {
-	if(err) {
-		return console.error("Error");
-	}
-	for (var i = 0; i < data.length; i++) {
-		console.log(data[i]);
-	}
-})
+http.get(process.argv[2], function(response) {
+	response.pipe(bl(function (err, data) {
+		if(err) {
+			return console.error(err);
+		}
+		var str = data.toString();
+		console.log(str.length);
+		console.log(str);
+	}));
+	
+}).on("error", console.error);
