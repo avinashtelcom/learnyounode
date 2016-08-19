@@ -1,18 +1,10 @@
-var fs = require("fs");
-var path = require("path");
+var mymodule = require("./mymodule.js");
 
-var folder = process.argv[2];
-var ext = "."+process.argv[3];
-
-fs.readdir(folder, function(err, files) {
-	if(err) return console.error(err);
-	
-	var realArr = files.filter(function(val) {
-		return path.extname(val) === ext;
-	});
-
-	for (var i = 0; i < realArr.length; i++) {
-		console.log(realArr[i]);
+mymodule(process.argv[2],process.argv[3], function(err, data) {
+	if(err) {
+		return console.error("Error");
 	}
-});
-
+	for (var i = 0; i < data.length; i++) {
+		console.log(data[i]);
+	}
+})
