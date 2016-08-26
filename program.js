@@ -1,9 +1,14 @@
-var net = require("net");
-var strftime = require("strftime");
-var data = new Date();
-data = strftime("%Y-%m-%d %H:%M", data);
+var http = require("http");
+var fs = require("fs");
 
-var server = net.createServer(function(socket) {
-    socket.end(data+"\n");
+var server = http.createServer(function(request, response) {
+   var filename = process.argv[3];
+   var readStream = fs.createReadStream(filename);
+   
+   response.writeHead(200, { 'content-type': 'text/plain' });
+   readStream.on('open', function() {
+      readStream.pipe(response); 
+   });
+   
 });
 server.listen(process.argv[2]);
